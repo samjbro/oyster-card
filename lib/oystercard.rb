@@ -1,5 +1,7 @@
 class Oystercard
 
+TOP_UP_LIMIT = 90
+
 attr_accessor :balance
 
   def initialize
@@ -7,6 +9,7 @@ attr_accessor :balance
   end
 
   def top_up(amount)
+    raise "Top up limit of #{TOP_UP_LIMIT} exceeded" if amount + balance > TOP_UP_LIMIT
     self.balance += amount
   end
 
