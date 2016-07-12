@@ -1,17 +1,15 @@
+require_relative 'station'
 class Oystercard
 
 TOP_UP_LIMIT = 90
 MINIMUM_BALANCE = 1
 
 attr_accessor :balance
-attr_reader :entry_station
-attr_reader :exit_station
-attr_reader :journeys
+attr_reader :entry_station, :exit_station, :journeys
 
   def initialize
+    reset_station
     @balance = 0
-    @entry_station = nil
-    @exit_station = nil
     @journeys = []
   end
 
@@ -33,7 +31,7 @@ attr_reader :journeys
     deduct(MINIMUM_BALANCE)
     @exit_station = station
     store_journey
-    @exit_station, @entry_station = nil
+    reset_station
   end
 
 private
@@ -41,6 +39,10 @@ private
   def store_journey
     journey = Hash[:entry_station => @entry_station, :exit_station => @exit_station]
     @journeys << journey
+  end
+
+  def reset_station
+    @exit_station, @entry_station = nil
   end
 
   def deduct(amount)
