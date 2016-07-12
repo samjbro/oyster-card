@@ -8,4 +8,9 @@ describe Oystercard do
   it "should increase the balance by top up amount" do
     expect{subject.top_up(10)}.to change{subject.balance}.by(10)
   end
+
+  it 'should throw an excption if balance exceeds 90' do
+    maximum = Oystercard::MAX_BALANCE
+    expect{ subject.top_up(maximum + 1) }.to raise_error 'Maximum amount exceeded'
+  end
 end
