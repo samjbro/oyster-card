@@ -33,20 +33,25 @@ describe Oystercard do
 
     describe 'in_journey?' do
       it 'should return false when initialized' do
-        expect(subject.in_journey?).to be false
+        expect(subject).not_to be_in_journey
       end
     end
     describe 'touch_in!' do
       it 'should change #in_journey to be true' do
+        subject.top_up(10)
         subject.touch_in!
-        expect(subject.in_journey?).to be true
+        expect(subject).to be_in_journey
+      end
+      it 'should raise error if balance is less than minimum' do
+        expect{ subject.touch_in! }.to raise_error 'Balance too low, please top up your card'
       end
     end
     describe 'touch_out!' do
       it 'should change #in_journey to be false' do
+        subject.top_up(10)
         subject.touch_in!
         subject.touch_out!
-        expect(subject.in_journey?).to be false
+        expect(subject).not_to be_in_journey
       end
     end
   end

@@ -1,6 +1,7 @@
 class Oystercard
 
 TOP_UP_LIMIT = 90
+MINIMUM_BALANCE = 1
 
 attr_accessor :balance
 attr_accessor :in_journey
@@ -24,6 +25,7 @@ attr_accessor :in_journey
   end
 
   def touch_in!
+    raise 'Balance too low, please top up your card' if balance < MINIMUM_BALANCE
     self.in_journey = true
   end
 
