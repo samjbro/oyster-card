@@ -1,4 +1,3 @@
-#unitialized constant Oystercard (NameError)
 require 'oystercard'
 
 describe Oystercard do
@@ -21,14 +20,6 @@ describe Oystercard do
         expect{ subject.top_up(1) }.to raise_error "Top up limit of #{top_up_limit} exceeded"
       end
     end
-
-    ## private
-    # describe 'deduct' do
-    #   it 'should deduct 3 from the balance' do
-    #     subject.top_up(20)
-    #     expect{ subject.deduct(Oystercard::MINIMUM_BALANCE) }.to change{ subject.balance }.by (-(Oystercard::MINIMUM_BALANCE))
-    #   end
-    # end
 
   end
 
@@ -60,15 +51,31 @@ describe Oystercard do
       before do
         subject.top_up(Oystercard::MINIMUM_BALANCE)
         subject.touch_in!(station)
-        subject.touch_out!
+        subject.touch_out!(station)
       end
       it 'should change #in_journey to be false' do
         expect(subject).not_to be_in_journey
       end
       it 'should deduct the minimum fare from balance' do
-        expect{ subject.touch_out! }.to change{ subject.balance }.by (-(Oystercard::MINIMUM_BALANCE))
+        expect{ subject.touch_out!(station) }.to change{ subject.balance }.by (-(Oystercard::MINIMUM_BALANCE))
       end
     end
   end
 
+  describe 'journey history' do
+    it 'starts with no journeys on the card' do
+      expect(subject.journeys).to be_empty
+    end
+  end
+
+  describe 'journey history after one journey' do
+    before do
+      subject.top_up(Oystercard::MINIMUM_BALANCE)
+      subject.touch_in!(station)
+      subject.touch_out!(station)
+    end
+    it 'should add one journey after touch in & touch out' do
+      expect(subject.journeys).not_to be_empty
+    end
+  end
 end
