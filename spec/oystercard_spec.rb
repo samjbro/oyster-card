@@ -20,12 +20,13 @@ describe Oystercard do
       end
     end
 
-    describe 'deduct' do
-      it 'should deduct 3 from the balance' do
-        subject.top_up(20)
-        expect{ subject.deduct(3) }.to change{ subject.balance }.by (-3)
-      end
-    end
+    ## private
+    # describe 'deduct' do
+    #   it 'should deduct 3 from the balance' do
+    #     subject.top_up(20)
+    #     expect{ subject.deduct(Oystercard::MINIMUM_BALANCE) }.to change{ subject.balance }.by (-(Oystercard::MINIMUM_BALANCE))
+    #   end
+    # end
 
   end
 
@@ -38,7 +39,7 @@ describe Oystercard do
     end
     describe 'touch_in!' do
       it 'should change #in_journey to be true' do
-        subject.top_up(10)
+        subject.top_up(Oystercard::MINIMUM_BALANCE)
         subject.touch_in!
         expect(subject).to be_in_journey
       end
@@ -47,11 +48,16 @@ describe Oystercard do
       end
     end
     describe 'touch_out!' do
-      it 'should change #in_journey to be false' do
-        subject.top_up(10)
+      before do
+        subject.top_up(Oystercard::MINIMUM_BALANCE)
         subject.touch_in!
         subject.touch_out!
+      end
+      it 'should change #in_journey to be false' do
         expect(subject).not_to be_in_journey
+      end
+      it 'should deduct the minimum fare from balance' do
+        expect{ subject.touch_out! }.to change{ subject.balance }.by (-(Oystercard::MINIMUM_BALANCE))
       end
     end
   end
