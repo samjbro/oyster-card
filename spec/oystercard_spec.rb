@@ -3,7 +3,7 @@ require 'oystercard'
 
 describe Oystercard do
 
-  let(:charing_cross_station) { double('Charing Cross') }
+  let(:station) { double :station }
 
   context 'balance' do
 
@@ -42,24 +42,24 @@ describe Oystercard do
     describe 'touch_in!' do
       it 'should change #in_journey to be true' do
         subject.top_up(Oystercard::MINIMUM_BALANCE)
-        subject.touch_in!(charing_cross_station)
+        subject.touch_in!(station)
         expect(subject).to be_in_journey
       end
       it 'should raise error if balance is less than minimum' do
-        expect{ subject.touch_in!(charing_cross_station) }.to raise_error 'Balance too low, please top up your card'
+        expect{ subject.touch_in!(station) }.to raise_error 'Balance too low, please top up your card'
       end
     end
     describe 'entry_station' do
       it 'should return the entry station' do
         subject.top_up(Oystercard::MINIMUM_BALANCE)
-        subject.touch_in!(charing_cross_station)
-        expect(subject.entry_station).to eq charing_cross_station
+        subject.touch_in!(station)
+        expect(subject.entry_station).to eq station
       end
     end
     describe 'touch_out!' do
       before do
         subject.top_up(Oystercard::MINIMUM_BALANCE)
-        subject.touch_in!(charing_cross_station)
+        subject.touch_in!(station)
         subject.touch_out!
       end
       it 'should change #in_journey to be false' do
