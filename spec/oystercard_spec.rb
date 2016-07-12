@@ -6,7 +6,11 @@ describe Oystercard do
   end
 
   it "should increase the balance by top up amount" do
-    expect{subject.top_up(10)}.to change{subject.balance}.by(10)
+    expect{subject.top_up(10)}.to change{subject.balance}.by(+10)
+  end
+
+  it "should deduct the balance by deduction amount" do
+    expect{subject.deduct(10)}.to change{subject.balance}.by(-10)
   end
 
   it 'should throw an excption if balance exceeds 90' do
