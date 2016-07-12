@@ -22,13 +22,6 @@ describe Oystercard do
     end
   end
 
-  context '#deduct' do
-    it { is_expected.to respond_to(:deduct).with(1).arguments}
-
-    it 'should deduct money from balance' do
-      expect{ subject.deduct(10) }.to change{ subject.balance }.by(-10)
-    end
-  end
   context '#in_journey?' do
   	it 'is initially not in a journey' do
   		expect(subject).to_not be_in_journey
@@ -37,7 +30,7 @@ describe Oystercard do
 
   context '#touch_in' do
   	it "can touch in" do
-      subject.top_up(1)
+     	subject.top_up(1)
   		subject.touch_in
   		expect(subject).to be_in_journey
   	end
@@ -49,10 +42,16 @@ describe Oystercard do
 
   context '#touch_out' do
   	it "can touch_out" do
-      subject.top_up(1)
+     	subject.top_up(1)
   		subject.touch_in
   		subject.touch_out
   		expect(subject).to_not be_in_journey
   	end
+  	it "deducts fare at touch out" do
+  		subject.top_up(10)
+  		subject.touch_in
+  		expect{ subject.touch_out }.to change{ subject.balance }.by(-1)
+  	end
   end
+
 end
