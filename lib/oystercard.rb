@@ -9,4 +9,7 @@ class Oystercard
   	fail "Top up would exceed max balance of #{MAXIMUM_BALANCE}" if amount + balance > MAXIMUM_BALANCE
     self.balance += amount
   end
+  def deduct(amount)
+    self.balance -= amount
+  end
 end
