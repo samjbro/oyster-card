@@ -6,10 +6,14 @@ MINIMUM_BALANCE = 1
 attr_accessor :balance
 # attr_accessor :in_journey
 attr_reader :entry_station
+attr_reader :exit_station
+attr_reader :journeys
 
   def initialize
     @balance = 0
     @entry_station = nil
+    @exit_station = nil
+    @journeys = []
   end
 
   def top_up(amount)
@@ -27,13 +31,20 @@ attr_reader :entry_station
     # self.in_journey = true
   end
 
-  def touch_out!
+  def touch_out!(station)
     deduct(MINIMUM_BALANCE)
     # self.in_journey = false
-    @entry_station = nil
+    @exit_station = station
+    self.store_journey
+    @exit_station, @entry_station = nil
   end
 
+  def
 private
+
+  def store_journey
+    journey = Hash[:entry_station => @entry_station, :exit_station => @exit_station]
+    @journeys << journey
 
   def deduct(amount)
     self.balance -= amount
