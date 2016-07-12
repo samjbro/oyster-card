@@ -42,7 +42,6 @@ describe Oystercard do
   		expect(subject).to be_in_journey
   	end
   end
-
   context '#touch_out' do
   	it "can touch_out" do
   		subject.touch_in
