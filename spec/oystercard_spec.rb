@@ -26,6 +26,29 @@ describe Oystercard do
         expect{ subject.deduct(3) }.to change{ subject.balance }.by (-3)
       end
     end
+
+  end
+
+  context 'in journey' do
+
+    describe 'in_journey?' do
+      it 'should return false when initialized' do
+        expect(subject.in_journey?).to be false
+      end
+    end
+    describe 'touch_in!' do
+      it 'should change #in_journey to be true' do
+        subject.touch_in!
+        expect(subject.in_journey?).to be true
+      end
+    end
+    describe 'touch_out!' do
+      it 'should change #in_journey to be false' do
+        subject.touch_in!
+        subject.touch_out!
+        expect(subject.in_journey?).to be false
+      end
+    end
   end
 
 end
