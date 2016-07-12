@@ -5,10 +5,11 @@ MINIMUM_BALANCE = 1
 
 attr_accessor :balance
 attr_accessor :in_journey
+attr_reader :entry_station
 
   def initialize
     @balance = 0
-    @in_journey = false
+    @entry_station = nil
   end
 
   def top_up(amount)
@@ -16,20 +17,20 @@ attr_accessor :in_journey
     self.balance += amount
   end
 
-
-
   def in_journey?
-    in_journey
+    @entry_station.nil? ? false : true
   end
 
-  def touch_in!
+  def touch_in!(station)
     raise 'Balance too low, please top up your card' if balance < MINIMUM_BALANCE
+    @entry_station = station
     self.in_journey = true
   end
 
   def touch_out!
     deduct(MINIMUM_BALANCE)
     self.in_journey = false
+    @entry_station = nil
   end
 
 private
