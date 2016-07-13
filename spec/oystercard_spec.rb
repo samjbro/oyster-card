@@ -17,4 +17,20 @@ describe Oystercard do
     maximum = Oystercard::MAX_BALANCE
     expect{ subject.top_up(maximum+1) }.to raise_error 'Maximum amount exceeded'
   end
+
+  it "should know if status is in_journey" do
+    expect(subject).to respond_to(:in_journey?)
+    expect(subject.in_journey?).to eq false
+  end
+
+  it "should allow a user to touch_in" do
+    subject.touch_in
+    expect(subject).to be_in_journey
+  end
+
+  it "should allow a user to touch_out" do
+    subject.touch_in
+    subject.touch_out
+    expect(subject).to_not be_in_journey
+  end
 end
