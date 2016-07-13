@@ -1,12 +1,14 @@
 require 'station'
 
 describe Station do
-  let(:station) { Station.new(:new_station, :new_fare) }
 
-  it 'should initialize with a station' do
-    expect(station.name).to eq :new_station
+  subject {described_class.new(name: "Old Street", zone: 1)}
+
+  it 'knows its name' do
+    expect(subject.name).to eq("Old Street")
   end
-  it 'should initialize with a fare zone' do
-    expect(station.fare_zone).to eq :new_fare
+
+  it 'knows its zone' do
+    expect(subject.zone).to eq(1)
   end
 end

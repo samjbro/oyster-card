@@ -1,10 +1,10 @@
 class Station
 
-attr_reader :name, :fare_zone
+attr_reader :name, :zone
 
-  def initialize(name, fare_zone)
-    @name = name
-    @fare_zone = fare_zone
+  def initialize station
+    @name = station[:name]
+    @zone = station[:zone]
   end
 
 end
