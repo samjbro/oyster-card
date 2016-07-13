@@ -37,20 +37,18 @@ describe Oystercard do
       it 'should raise error if balance is less than minimum' do
         expect{ subject.touch_in!(station) }.to raise_error 'Balance too low, please top up your card'
       end
-    end
-    describe '#entry_station' do
-      it 'should return the entry station' do
-        subject.top_up(Oystercard::MINIMUM_BALANCE)
-        subject.touch_in!(station)
-        expect(subject.entry_station).to eq station
-      end
-    end
     describe '#touch_in!' do
-      it 'should change #in_journey to be true' do
+      before do
         subject.top_up(Oystercard::MINIMUM_BALANCE)
         subject.touch_in!(station)
+      end
+      it 'should change #in_journey to be true' do
         expect(subject).to be_in_journey
       end
+      it 'should deduct the minimum fare from balance' do
+        expect{ subject.touch_out!(station) }.to change{ subject.balance }.by (-(Oystercard::MINIMUM_BALANCE))
+      end
+    end
     describe '#touch_out!' do
       before do
         subject.top_up(Oystercard::MINIMUM_BALANCE)
@@ -60,15 +58,12 @@ describe Oystercard do
       it 'should change #in_journey to be false' do
         expect(subject).not_to be_in_journey
       end
-      it 'should deduct the minimum fare from balance' do
-        expect{ subject.touch_out!(station) }.to change{ subject.balance }.by (-(Oystercard::MINIMUM_BALANCE))
-      end
     end
   end
 
     describe '#store_journey' do
       it 'starts with no journeys on the card' do
-        expect(subject.journeys).to be_empty
+        expect(subject.journey_history).to be_empty
       end
     end
 
@@ -79,7 +74,7 @@ describe Oystercard do
         subject.touch_out!(station)
       end
       it 'should add one journey after touch in & touch out' do
-        expect(subject.journeys).not_to be_empty
+        expect(subject.journey_history).not_to be_empty
       end
     end
 end
