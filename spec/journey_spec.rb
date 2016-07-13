@@ -18,4 +18,21 @@ describe Journey do
       expect(subject.exit_station).to eq exit_station
     end
   end
+
+  describe '#fare' do
+
+    it "states the journey's fare" do
+      subject.start_journey(entry_station)
+      subject.end_journey(exit_station)
+      expect(subject.fare).to eq(Journey::MINIMUM_BALANCE)
+    end
+    it "states penalty fare if there is no recorded entry station" do
+      subject.end_journey(exit_station)
+      expect(subject.fare).to eq(Journey::PENALTY_FARE) 
+    end
+     it "states penalty fare if there is no recorded exit station" do
+      subject.start_journey(entry_station)
+      expect(subject.fare).to eq(Journey::PENALTY_FARE) 
+    end
+  end
 end

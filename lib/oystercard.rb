@@ -6,7 +6,7 @@ TOP_UP_LIMIT = 90
 MINIMUM_BALANCE = 1
 
 attr_accessor :balance
-attr_reader :journey_history
+attr_reader :journey_history, :journey
 
   def initialize
     # reset_station
@@ -26,27 +26,31 @@ attr_reader :journey_history
 
   def touch_in!(station)
     raise 'Balance too low, please top up your card' if balance < MINIMUM_BALANCE
-    @journey = Journey.new
+    charge_and_close if @journey
+    create_new_journey
     @journey.start_journey(station)
   end
 
   def touch_out!(station)
-    deduct(MINIMUM_BALANCE)
+    create_new_journey unless @journey
     @journey.end_journey(station)
+    charge_and_close
+  end
+
+private
+  def create_new_journey
+    @journey = Journey.new
+  end
+
+  def charge_and_close
+    deduct(@journey.fare)
     store_journey
     @journey = nil
   end
 
-private
-
   def store_journey
-    puts @journey
     @journey_history << @journey
   end
-
-  # def reset_station
-  #   @exit_station, @entry_station = nil
-  # end
 
   def deduct(amount)
     self.balance -= amount
