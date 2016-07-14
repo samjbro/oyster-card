@@ -26,25 +26,28 @@ class Oystercard
 
   def touch_in(station)
     fail "you need at least £1 to travel" if balance < MIN_BALANCE
+
     if @journey
       deduct(@journey.fare)
-      @journey_history << @journey
-      @journey = nil
+      store_journey
     end
+
     @journey = Journey.new(station)
   end
 
   def touch_out(station)
-    if @journey == nil
-      @journey = Journey.new(nil)
-    end
+    @journey = Journey.new(nil) unless @journey
     @journey.exit_station = station
     deduct(@journey.fare)
-    @journey_history << @journey
-    @journey = nil
+    store_journey
   end
 
   private
+
+  def store_journey
+    @journey_history << @journey
+    @journey = nil
+  end
 
   def deduct(amount)
     @balance -= amount
