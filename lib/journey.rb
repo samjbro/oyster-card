@@ -7,13 +7,10 @@ PENALTY_FARE = 6
 
 attr_accessor :entry_station, :exit_station
 
-  def  initialize
-    @entry_station = nil
+  def  initialize(entry_station: nil)
+    @entry_station = entry_station
     @exit_station = nil
-  end
-
-  def start_journey(station)
-    self.entry_station = station
+    @fare = PENALTY_FARE
   end
 
   def end_journey(station)
@@ -25,6 +22,7 @@ attr_accessor :entry_station, :exit_station
   end
 
   def fare
-    ((entry_station == nil) || (exit_station == nil)) ? PENALTY_FARE : MINIMUM_BALANCE
+    @fare = MINIMUM_BALANCE if (entry_station && exit_station)
+    @fare
   end
 end
