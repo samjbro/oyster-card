@@ -47,10 +47,6 @@ let(:exit_station) { double :exit_station }
       expect{ subject.touch_in(entry_station) }.to raise_error "you need at least £1 to travel"
     end
 
-    it "should record entry_station" do
-      expect(subject).to respond_to(:touch_in).with(1).argument
-      expect(subject.entry_station).to eq entry_station
-    end
   end
 
   context "#touch_out" do
@@ -69,9 +65,9 @@ let(:exit_station) { double :exit_station }
       expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-min_balance)
     end
 
-    it "should forget entry_station station on touch_out" do
+    it "should end journey on touch_out" do
       subject.touch_out(exit_station)
-      expect(subject.entry_station).to be_nil
+      expect(subject).not_to be_in_journey
     end
 
     it { is_expected.to respond_to(:touch_out).with(1).argument }
@@ -81,7 +77,7 @@ let(:exit_station) { double :exit_station }
       subject.top_up(max_balance)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject.journey_history).to include("entry" => entry_station, "exit" => exit_station)
+      expect(subject.journey_history.last).to be_a Journey
     end
 
     it "should be empty when initiliazed" do
