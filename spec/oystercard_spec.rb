@@ -76,16 +76,16 @@ let(:exit_station) { double :exit_station }
 
     it { is_expected.to respond_to(:touch_out).with(1).argument }
   end
-  context "#journeys" do
+  context "#journey_history" do
     it "should return a list of journeys made" do
       subject.top_up(max_balance)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject.journeys).to include("entry" => entry_station, "exit" => exit_station)
+      expect(subject.journey_history).to include("entry" => entry_station, "exit" => exit_station)
     end
 
     it "should be empty when initiliazed" do
-      expect(subject.journeys).to be_empty
+      expect(subject.journey_history).to be_empty
     end
   end
 end
