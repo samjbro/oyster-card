@@ -22,4 +22,6 @@ describe Journey do
   	expect(subject).not_to be_active
   end
 
+
+
 end
