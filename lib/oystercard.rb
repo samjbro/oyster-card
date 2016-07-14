@@ -5,6 +5,7 @@ class Oystercard
   MAX_BALANCE = 90
   MIN_BALANCE = 1
   MIN_CHARGE = 1
+  PENALTY_CHARGE = 6
 
   attr_reader :balance, :journey_history
 
@@ -25,12 +26,20 @@ class Oystercard
 
   def touch_in(station)
     fail "you need at least £1 to travel" if balance < MIN_BALANCE
+    if @journey
+      deduct(@journey.fare)
+      @journey_history << @journey
+      @journey = nil
+    end
     @journey = Journey.new(station)
   end
 
   def touch_out(station)
-    deduct(@journey.fare)
+    if @journey == nil
+      @journey = Journey.new(nil)
+    end
     @journey.exit_station = station
+    deduct(@journey.fare)
     @journey_history << @journey
     @journey = nil
   end

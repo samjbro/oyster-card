@@ -47,6 +47,10 @@ let(:exit_station) { double :exit_station }
       expect{ subject.touch_in(entry_station) }.to raise_error "you need at least £1 to travel"
     end
 
+    it "should deduct a penalty fare when touching in twice in a row" do
+      expect{subject.touch_in(entry_station)}.to change{ subject.balance }.by(-Oystercard::PENALTY_CHARGE)
+    end
+
   end
 
   context "#touch_out" do
@@ -61,8 +65,13 @@ let(:exit_station) { double :exit_station }
       expect(subject).to_not be_in_journey
     end
 
-    xit "should deduct minimum fare when touching out" do
+    it "should deduct minimum fare when touching out after touching in" do
       expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-min_balance)
+    end
+
+    it "should deduct penalty fare when touching out without first touching in" do
+      subject.touch_out(exit_station)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Oystercard::PENALTY_CHARGE)
     end
 
     it "should end journey on touch_out" do
