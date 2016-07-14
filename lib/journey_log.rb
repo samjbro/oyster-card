@@ -1,5 +1,6 @@
 class JourneyLog
-  def start(log = Journey)
-    
+	
+  def start(station, log = Journey)
+    log.new(station)
   end
 end
