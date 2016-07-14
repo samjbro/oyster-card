@@ -77,10 +77,10 @@ let(:exit_station) { double :exit_station }
       subject.top_up(max_balance)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject.journey_history.last).to be_a Journey
+      expect(subject.journey_history.last.entry_station).to eq entry_station
     end
 
-    it "should be empty when initiliazed" do
+    it "should be empty when initialized" do
       expect(subject.journey_history).to be_empty
     end
   end

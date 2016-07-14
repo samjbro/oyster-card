@@ -21,4 +21,10 @@ describe Journey do
   	expect(subject).not_to be_active
   end
 
+  context "#fare" do
+  	it "should have a default fare of #{Journey::MINIMUM_FARE}" do
+  		expect(subject.fare).to eq Journey::MINIMUM_FARE
+  	end
+  end
+
 end
