@@ -8,4 +8,4 @@ station2 = Station.new(name: "Kings Cross", zone: 1)
 
 card.touch_in(station1)
 card.touch_out(station2)
-p card.journey_history
+p card.balance

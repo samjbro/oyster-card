@@ -3,7 +3,7 @@ require 'journey'
 describe Journey do
 	let(:station) {double :station}
 	subject {described_class.new(station)}
-	
+
   it 'should know its entry station' do
     expect(subject.entry_station).to eq station
   end
@@ -23,8 +23,13 @@ describe Journey do
 
   context "#fare" do
   	it "should have a default fare of #{Journey::MINIMUM_FARE}" do
+      subject.exit_station = station
   		expect(subject.fare).to eq Journey::MINIMUM_FARE
   	end
+
+    it "should have a penalty fare of #{Journey::PENALTY_FARE} " do
+      expect(subject.fare).to eq Journey::PENALTY_FARE
+    end
   end
 
 end

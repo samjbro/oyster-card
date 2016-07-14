@@ -61,7 +61,7 @@ let(:exit_station) { double :exit_station }
       expect(subject).to_not be_in_journey
     end
 
-    it "should deduct minimum fare when touching out" do
+    xit "should deduct minimum fare when touching out" do
       expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-min_balance)
     end
 
